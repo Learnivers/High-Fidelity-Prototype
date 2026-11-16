@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="LOGO.png" type="image/png">
 <style>
-  /* Hide the input boxes until Edit profile is clicked */
   .profile .edit { display: none; }
   .profile .editing .edit { display: block; }
   .profile .editing .val,
@@ -124,13 +123,7 @@
 
 <script src="auth.js"></script>
 <script>
-  if (typeof Auth === "undefined") {
-    document.querySelector("main").innerHTML =
-      "<p>auth.js is missing. Put auth.js in the same folder as this page.</p>";
-    throw new Error("auth.js missing");
-  }
-
-  // Loads the user account that signed in. Anyone else goes to the user sign in.
+  // Loads the account that signed up or signed in
   var data = Auth.require("user", "user.html");
   if (!data) { throw new Error("not signed in"); }
 
@@ -140,7 +133,6 @@
 
   var FIELDS = ["first", "last", "dob", "sex", "email", "phone", "street", "brgy", "city"];
 
-  // Older accounts may only have a full name; split it into first/last
   function getFirst(d) {
     if (d.first !== undefined) return d.first;
     var p = String(d.name || "").trim().split(/\s+/);
@@ -205,11 +197,9 @@
     }
   }
 
-  // Live age while editing the birthdate
   document.getElementById("dob").addEventListener("input", function () {
     document.getElementById("age").textContent = calcAge(this.value);
   });
-
   document.getElementById("editBtn").addEventListener("click", function () { setEditing(true); });
   document.getElementById("cancelBtn").addEventListener("click", function () { setEditing(false); });
   document.getElementById("signout").addEventListener("click", function () { Auth.logout(); });
@@ -247,7 +237,6 @@
     if (!city)   return fail("city", "Enter your city.");
     if (pass !== "" && pass.length < 6) return fail("password", "Use a password with at least 6 characters.");
 
-    // Update the signed-in account; username and role stay the same
     var updated = Object.assign({}, data, {
       name: first + " " + last,
       first: first, last: last,
