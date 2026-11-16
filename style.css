@@ -1201,7 +1201,7 @@ body.gate main {
 /* Small logo inside login card */
 .gate-logo {
   display: block;
-  width: 200px;
+  width: 150px;
   height: auto;
   margin: 0 auto 14px;
 }
