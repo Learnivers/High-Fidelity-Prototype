@@ -12,9 +12,9 @@
   <header class="top">
     <div>
       <h1>Home</h1>
-      <p class="sub">What would you like to do?</p>
+      <p class="sub" id="welcome">What would you like to do?</p>
     </div>
-    <a class="out" href="login.html">Log Out</a>
+    <a class="out" id="logout" href="login.html">Log Out</a>
   </header>
 
   <nav class="menu" aria-label="Main menu">
@@ -49,6 +49,30 @@
     </a>
   </nav>
 </main>
+
+<script src="auth.js"></script>
+<script>
+  if (typeof Auth === "undefined") {
+    document.querySelector("main").innerHTML =
+      "<p>auth.js is missing. Put auth.js in the same folder as this page.</p>";
+    throw new Error("auth.js missing");
+  }
+
+  // Only signed-in users can see this page. Everyone else goes to sign in.
+  var me = Auth.require("user", "user.html");
+  if (!me) { throw new Error("not signed in"); }
+
+  // Greet the user by first name
+  var first = me.first || String(me.name || "").split(/\s+/)[0];
+  if (first) {
+    document.getElementById("welcome").textContent =
+      "Welcome, " + first + ". What would you like to do?";
+  }
+
+  // Log Out ends the session, then goes to the role page
+  document.getElementById("logout").addEventListener("click", function () {
+    Auth.logout();
+  });
 </script>
 </body>
 </html>
