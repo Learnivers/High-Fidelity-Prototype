@@ -32,16 +32,20 @@ body {
   align-items: center;
   justify-content: center;
   padding: 20px;
+
   background-image: url("LOGO.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 650px;
   background-attachment: fixed;
+
   color: #1a2b44;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
+
   --accent: green;
 }
+
 
 /* NOTE: admin colour theme. Only applies if <body data-role="admin"> (admin.html currently says "user"). */
 body[data-role="admin"] { --accent: #0b3d91; }
