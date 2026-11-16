@@ -10,6 +10,7 @@
   /* Hide the input boxes until Edit profile is clicked */
   .profile .edit { display: none; }
   .profile .editing .edit { display: block; }
+  .profile .editing button.edit { display: inline-block; }
   .profile .editing .val,
   .profile .editing .view-only { display: none; }
 </style>
@@ -130,7 +131,7 @@
     throw new Error("auth.js missing");
   }
 
-  // Loads the user account that signed in. Anyone else goes to the user sign in.
+  // Loads the user account that signed up or signed in. Anyone else goes to the user sign in.
   var data = Auth.require("user", "user.html");
   if (!data) { throw new Error("not signed in"); }
 
@@ -220,4 +221,52 @@
   });
 
   function val(id) { return document.getElementById(id).value.trim(); }
-  function fail(id,
+  function fail(id, message) {
+    err.textContent = message;
+    document.getElementById(id).focus();
+  }
+
+  function save() {
+    err.textContent = "";
+    var first = val("first"), last = val("last");
+    var dob = document.getElementById("dob").value;
+    var sex = document.getElementById("sex").value;
+    var email = val("email"), phone = val("phone");
+    var street = val("street"), brgy = val("brgy"), city = val("city");
+    var pass = document.getElementById("password").value;
+
+    if (!first)  return fail("first", "Enter your first name.");
+    if (!last)   return fail("last", "Enter your last name.");
+    if (!dob)    return fail("dob", "Enter your birthdate.");
+    if (new Date(dob) > new Date()) return fail("dob", "Birthdate cannot be in the future.");
+    if (!email)  return fail("email", "Enter your email.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("email", "Enter a valid email address.");
+    if (!phone)  return fail("phone", "Enter your mobile number.");
+    if (!/^(09|\+639)\d{9}$/.test(phone.replace(/[\s-]/g, ""))) return fail("phone", "Enter a valid mobile number, like 09XX XXX XXXX.");
+    if (!street) return fail("street", "Enter your street address.");
+    if (!brgy)   return fail("brgy", "Enter your barangay.");
+    if (!city)   return fail("city", "Enter your city.");
+    if (pass !== "" && pass.length < 6) return fail("password", "Use a password with at least 6 characters.");
+
+    // Update the signed-in account; username and role stay the same
+    var updated = Object.assign({}, data, {
+      name: first + " " + last,
+      first: first, last: last,
+      dob: dob, sex: sex,
+      email: email, phone: phone,
+      street: street, brgy: brgy, city: city,
+      password: pass === "" ? data.password : pass
+    });
+
+    var msg = Auth.update(updated);
+    if (msg) { err.textContent = msg; return; }
+
+    data = Auth.current();
+    setEditing(false);
+    ok.textContent = "Your profile was updated.";
+  }
+
+  show();
+</script>
+</body>
+</html>
