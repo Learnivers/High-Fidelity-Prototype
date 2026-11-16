@@ -25,20 +25,6 @@
 /* Basic blue and white theme */
 * { box-sizing: border-box; }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  color: #1a2b44;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
-  --accent: green;
-    background-image: url("LOGOO.png");
-
-
 /* ===== FULL SCREEN BACKGROUND ===== */
 body {
     margin: 0;
