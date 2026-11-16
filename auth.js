@@ -58,7 +58,7 @@ var Auth = (function () {
       if (!who || !pass) return "Enter your username and password.";
       var list = readUsers(), i = indexOfLogin(list, who);
       if (i === -1 || list[i].password !== pass) return "Wrong username or password.";
-      if (role && list[i].role !== role) return "This is not a " + role + " account.";
+     if (role && (list[i].role || "user") !== role) return "This is not a " + role + " account.";
       sessionStorage.setItem(SESSION, list[i].email);
       return "";
     },
@@ -70,7 +70,7 @@ var Auth = (function () {
     },
     require: function (role, loginPage) {
       var u = Auth.current();
-      if (!u || (role && u.role !== role)) {
+      if (!u || (role && (u.role || "user") !== role)) {
         window.location.replace(loginPage || "login.html");
         return null;
       }
