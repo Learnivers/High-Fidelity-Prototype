@@ -14,7 +14,7 @@
       <h1>Admin dashboard</h1>
       <p class="sub">Welcome back. Here is what is happening today.</p>
     </div>
-    <a class="out" href="login.html">Log Out</a>
+    <a class="out" id="logout" href="login.html">Log Out</a>
   </header>
 
   <!-- Overview: click a card to see those reports -->
@@ -44,7 +44,23 @@
   </nav>
 </main>
 
+<script src="auth.js"></script>
 <script>
+  // Only a real admin account can open this page.
+  // Anyone else is sent to the admin sign-in.
+  if (typeof Auth === "undefined") {
+    document.querySelector("main").innerHTML =
+      "<p>auth.js is missing. Put auth.js in the same folder as this page.</p>";
+    throw new Error("auth.js missing");
+  }
+  var me = Auth.require("admin", "admin.html");
+  if (!me) { throw new Error("not admin"); }
+
+  // Log Out ends the session
+  document.getElementById("logout").addEventListener("click", function () {
+    Auth.logout();
+  });
+
   function read(key) {
     try {
       var data = JSON.parse(localStorage.getItem(key) || "[]");
