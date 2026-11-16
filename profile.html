@@ -5,12 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My profile</title>
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="LOGO.png">
+<link rel="icon" href="LOGO.png" type="image/png">
 <style>
   /* Hide the input boxes until Edit profile is clicked */
   .profile .edit { display: none; }
   .profile .editing .edit { display: block; }
-  .profile .editing button.edit { display: inline-block; }
   .profile .editing .val,
   .profile .editing .view-only { display: none; }
 </style>
@@ -131,7 +130,7 @@
     throw new Error("auth.js missing");
   }
 
-  // Loads the user account that signed up or signed in. Anyone else goes to the user sign in.
+  // Loads the user account that signed in. Anyone else goes to the user sign in.
   var data = Auth.require("user", "user.html");
   if (!data) { throw new Error("not signed in"); }
 
