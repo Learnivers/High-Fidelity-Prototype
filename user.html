@@ -13,7 +13,6 @@
   <section id="login">
     <a class="back" href="login.html">&larr; Change role</a>
     <h1 id="title">Sign in as User</h1>
-    <p class="sub" id="sub"></p>
 
     <form id="f" novalidate>
       <label class="f">Username
@@ -22,45 +21,53 @@
       <label class="f">Password
         <input type="password" id="p" autocomplete="current-password" required>
       </label>
+      <p class="ok" id="ok" role="status"></p>
       <p class="err" id="err" role="alert"></p>
       <button class="go" id="go" type="submit">Sign in</button>
     </form>
 
     <p class="signup">Don't have an account? <a href="signup.html">Create account</a></p>
   </section>
-
-  <section class="done" id="done" aria-live="polite" hidden>
-    <h1>Welcome, <span id="name"></span></h1>
-    <p>You’re signed in as <span class="tag" id="tag"></span></p>
-    <a class="out" href="index.html">Sign out</a>
-  </section>
 </main>
 
+<script src="auth.js"></script>
 <script>
   const role = document.body.dataset.role;
   const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
 
   document.getElementById("title").textContent = "Sign in as " + roleLabel;
-  document.getElementById("tag").textContent = roleLabel;
 
-  const form = document.getElementById("f");
   const err = document.getElementById("err");
+  const ok = document.getElementById("ok");
 
-  form.addEventListener("submit", function (e) {
+  if (typeof Auth === "undefined") {
+    err.textContent = "auth.js is missing. Put auth.js in the same folder as this page.";
+    document.getElementById("go").disabled = true;
+  }
+
+  // Shown after creating an account
+  if (new URLSearchParams(window.location.search).get("created") === "1") {
+    ok.textContent = "Account created. You can sign in now.";
+  }
+
+  document.getElementById("f").addEventListener("submit", function (e) {
     e.preventDefault();
     err.textContent = "";
+    ok.textContent = "";
 
-    const username = document.getElementById("u").value.trim();
-    const password = document.getElementById("p").value;
+    const uEl = document.getElementById("u");
+    const pEl = document.getElementById("p");
+    const username = uEl.value.trim();
+    const password = pEl.value;
 
-    if (!username || !password) {
-      err.textContent = "Please enter your username and password.";
-      return;
-    }
+    if (!username) { err.textContent = "Enter your username."; uEl.focus(); return; }
+    if (!password) { err.textContent = "Enter your password."; pEl.focus(); return; }
 
-    // TODO: replace with a real server-side login check
-    sessionStorage.setItem("user", username);
-    sessionStorage.setItem("role", role);
+    // Auth.login checks the saved accounts. It returns "" on success,
+    // otherwise an error message.
+    const msg = Auth.login(username, password, role);
+    if (msg) { err.textContent = msg; return; }
+
     window.location.href = "home.html";
   });
 </script>
