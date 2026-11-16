@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My profile</title>
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="LOGO.png">
 <style>
   /* Hide the input boxes until Edit profile is clicked */
   .profile .edit { display: none; }
@@ -14,7 +13,7 @@
   .profile .editing .view-only { display: none; }
 </style>
 </head>
-<body class="wide profile">
+<body class="wide profile" data-role="user">
 <main>
   <header class="head">
     <div class="who">
@@ -126,11 +125,11 @@
 <script>
   if (typeof Auth === "undefined") {
     document.querySelector("main").innerHTML =
-      "<p>auth.js is missing. Put auth.js in the same folder as this page.</p>";
+      "<p>auth.js was not found. Check the path in the script tag at the bottom of this page.</p>";
     throw new Error("auth.js missing");
   }
 
-  // Loads the user account that signed in. Anyone else goes to the user sign in.
+  // Loads the account that signed in. Anyone else goes to the user sign in.
   var data = Auth.require("user", "user.html");
   if (!data) { throw new Error("not signed in"); }
 
@@ -205,7 +204,6 @@
     }
   }
 
-  // Live age while editing the birthdate
   document.getElementById("dob").addEventListener("input", function () {
     document.getElementById("age").textContent = calcAge(this.value);
   });
@@ -227,14 +225,13 @@
     return false;
   }
 
-  // ---- Saving ----
   function getUsers() {
     try { return JSON.parse(localStorage.getItem("users")) || []; }
     catch (e) { return []; }
   }
 
-  // Writes the updated account back. Uses auth.js if it has an update
-  // function, otherwise updates the "users" list directly (matched by username).
+  // Uses Auth.update if your auth.js has it, otherwise updates the
+  // "users" list directly (matched by username).
   function persist(updated) {
     if (typeof Auth.update === "function") {
       Auth.update(updated);
@@ -283,7 +280,6 @@
       }
     }
 
-    // Copy the account, change the editable fields (username never changes)
     var updated = {};
     for (var key in data) { if (data.hasOwnProperty(key)) updated[key] = data[key]; }
     updated.first = first;
