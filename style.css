@@ -1193,7 +1193,7 @@ body.gate::before {
 body.gate main {
   position: relative;
   z-index: 1;
-  max-width: 460px;
+  max-width: 400px;
   border-radius: 14px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
@@ -1243,7 +1243,7 @@ body.gate[data-role="admin"] {
 /* Mobile responsive */
 @media (max-width: 480px) {
   .gate-logo {
-    width: 120px;
+    width: 110px;
   }
 
   .gate .roles {
@@ -1251,8 +1251,8 @@ body.gate[data-role="admin"] {
   }
 
   body.gate::before {
-    width: 90vmin;
-    height: 90vmin;
+    width: 80vmin;
+    height: 80vmin;
   }
 }
 
