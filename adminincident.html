@@ -88,7 +88,18 @@
   <img id="big" alt="Photo uploaded by the user">
 </div>
 
+<script src="auth.js"></script>
 <script>
+  // Only a real admin account can open this page.
+  // Anyone else is sent to the admin sign-in.
+  if (typeof Auth === "undefined") {
+    document.querySelector("main").innerHTML =
+      "<p>auth.js is missing. Put auth.js in the same folder as this page.</p>";
+    throw new Error("auth.js missing");
+  }
+  var me = Auth.require("admin", "admin.html");
+  if (!me) { throw new Error("not admin"); }
+
   var $ = function (id) { return document.getElementById(id); };
 
   // Only incident reports are read here. Complaint reports are stored separately.
