@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sign in</title>
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="LOGO.png" type="image/png">
+<link rel="icon" href="LOGO.png">
 </head>
 <body data-role="admin">
 <main>
@@ -62,6 +62,7 @@
     if (!username) { err.textContent = "Enter your username."; uEl.focus(); return; }
     if (!password) { err.textContent = "Enter your password."; pEl.focus(); return; }
 
+    // Auth.login returns an error message on failure, nothing on success
     const msg = Auth.login(username, password, role);
     if (msg) { err.textContent = msg; return; }
 
