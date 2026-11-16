@@ -38,14 +38,23 @@ body {
   --accent: green;
     background-image: url("LOGOO.png");
 
-    background:
-        radial-gradient(circle at center, #08734b 0%, #075638 55%, #003d2b 100%);
 
-    position: relative;
-    isolation: isolate;
+/* ===== FULL SCREEN BACKGROUND ===== */
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1a2b44;
+    line-height: 1.5;
+
+    --accent: green;
 }
 
-/* LARGE FADED LOGO */
+/* ===== LARGE FADED BARANGAY LOGO ===== */
 body::before {
     content: "";
     position: fixed;
@@ -53,53 +62,118 @@ body::before {
 
     background-image: url("LOGOO.png");
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
     background-size: min(75vw, 900px);
 
-    opacity: 0.22;
+    opacity: 0.28;
     mix-blend-mode: screen;
+
     pointer-events: none;
     z-index: -1;
 }
 
-/* GOLD CURVED DESIGN */
+/* ===== GOLD CURVED ACCENTS ===== */
 body::after {
     content: "";
     position: fixed;
     inset: 0;
-    pointer-events: none;
-    z-index: -1;
 
     background:
         radial-gradient(
-            ellipse at -10% -20%,
-            transparent 0 64%,
-            #e8c45b 64.2% 65.5%,
-            transparent 65.7%
+            ellipse 100% 85% at -12% -35%,
+            transparent 69%,
+            #e8c45b 69.5% 71%,
+            transparent 71.5%
         ),
         radial-gradient(
-            ellipse at 110% 120%,
-            transparent 0 64%,
-            #e8c45b 64.2% 65.5%,
-            transparent 65.7%
+            ellipse 100% 85% at 112% 135%,
+            transparent 69%,
+            #e8c45b 69.5% 71%,
+            transparent 71.5%
         );
+
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* KEEP LOGIN BOX IN FRONT */
+/* ===== LOGIN CARD POSITION ===== */
 main {
     position: relative;
     z-index: 2;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
+/* ===== WHITE LOGIN CONTAINER ===== */
 #login {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 30px;
-    width: 340px;
+    width: 440px;
     max-width: 100%;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 16px;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
 }
 
+/* ===== SIGN IN HEADING ===== */
+#login h1 {
+    color: #087c35;
+    font-size: 28px;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+/* ===== DESCRIPTION ===== */
+#login .sub {
+    color: #526477;
+    margin-bottom: 20px;
+}
+
+/* ===== USER AND ADMIN BUTTONS ===== */
+.roles {
+    display: flex;
+    gap: 12px;
+}
+
+.role {
+    flex: 1;
+    padding: 14px;
+    background: #ffffff;
+    border: 2px solid #cbd8e9;
+    border-radius: 9px;
+    text-align: left;
+    cursor: pointer;
+    color: #1a2b44;
+    transition: 0.2s;
+}
+
+.role:hover {
+    border-color: #087c50;
+    background: #f0faf5;
+}
+
+.role b,
+.role small {
+    display: block;
+}
+
+.role small {
+    color: #526477;
+    margin-top: 4px;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 480px) {
+    #login {
+        padding: 24px;
+    }
+
+    .roles {
+        flex-direction: column;
+    }
+}
 
 
 /* NOTE: admin colour theme. Only applies if <body data-role="admin"> (admin.html currently says "user"). */
