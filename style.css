@@ -1171,8 +1171,8 @@ body.gate::before {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: min(120vmin, 900px);
-  height: min(120vmin, 900px);
+  width: min(120vmin, 100px);
+  height: min(120vmin, 100px);
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: url("LOGO.png") center / cover no-repeat;
