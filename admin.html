@@ -20,12 +20,9 @@
       <label class="f">Password
         <input type="password" id="p" autocomplete="current-password" required>
       </label>
-      <p class="ok" id="ok" role="status"></p>
       <p class="err" id="err" role="alert"></p>
       <button class="go" id="go" type="submit">Sign in</button>
     </form>
-
-    <p class="signup">Don't have an account? <a href="admin-signup.html">Create account</a></p>
   </section>
 </main>
 
@@ -37,22 +34,15 @@
   document.getElementById("title").textContent = "Sign in as " + roleLabel;
 
   const err = document.getElementById("err");
-  const ok = document.getElementById("ok");
 
   if (typeof Auth === "undefined") {
     err.textContent = "auth.js is missing. Put auth.js in the same folder as this page.";
     document.getElementById("go").disabled = true;
   }
 
-  // Shown after creating an account
-  if (new URLSearchParams(window.location.search).get("created") === "1") {
-    ok.textContent = "Account created. You can sign in now.";
-  }
-
   document.getElementById("f").addEventListener("submit", function (e) {
     e.preventDefault();
     err.textContent = "";
-    ok.textContent = "";
 
     const uEl = document.getElementById("u");
     const pEl = document.getElementById("p");
