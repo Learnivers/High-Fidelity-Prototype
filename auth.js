@@ -2,6 +2,17 @@ var Auth = (function () {
   var USERS = "bcirs_users", SESSION = "bcirs_session";
   var RESERVED = ["admin", "administrator"];   // cannot be used at signup
 
+  // The admin account. CHANGE the password here, then upload the file.
+  var ADMIN = {
+    username: "admin",
+    password: "admin123",
+    role: "admin",
+    name: "Administrator",
+    first: "Admin",
+    last: "",
+    email: "admin@bcirs.local"
+  };
+
   function readUsers() {
     try { return JSON.parse(localStorage.getItem(USERS)) || []; }
     catch (e) { return []; }
@@ -27,22 +38,40 @@ var Auth = (function () {
     return -1;
   }
 
-  // Default admin account (there is no admin signup). CHANGE the password.
+  // Makes sure the admin account exists and matches ADMIN above.
+  // Fixes missing, old or wrong admin records. Runs every time auth.js loads.
   (function seedAdmin() {
     var list = readUsers();
+    var changed = false;
+
+    // Remove any non-admin account that is using the admin username or email
+    var clean = [];
+    var adminAt = -1;
     for (var i = 0; i < list.length; i++) {
-      if (list[i].role === "admin") return;
+      var u = list[i];
+      var isAdminName = norm(u.username) === norm(ADMIN.username) ||
+                        norm(u.email) === norm(ADMIN.email);
+      if (isAdminName) {
+        if (adminAt === -1) { adminAt = clean.length; clean.push(u); }
+        else { changed = true; }              // drop duplicates
+      } else {
+        clean.push(u);
+      }
     }
-    list.push({
-      username: "admin",
-      password: "admin123",
-      role: "admin",
-      name: "Administrator",
-      first: "Admin",
-      last: "",
-      email: "admin@bcirs.local"
-    });
-    writeUsers(list);
+
+    if (adminAt === -1) {
+      clean.push(JSON.parse(JSON.stringify(ADMIN)));
+      changed = true;
+    } else {
+      var a = clean[adminAt];
+      if (a.role !== ADMIN.role || a.password !== ADMIN.password ||
+          a.username !== ADMIN.username || a.email !== ADMIN.email) {
+        clean[adminAt] = JSON.parse(JSON.stringify(ADMIN));
+        changed = true;
+      }
+    }
+
+    if (changed) writeUsers(clean);
   })();
 
   return {
