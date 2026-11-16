@@ -1163,24 +1163,33 @@ body.ahub main {
   .ahub .atiles { grid-template-columns: 1fr; }
   } 
 
-/* >>>>> START OF STYLES FOR: login.html (SIGN-IN ROLE PICKER BACKGROUND) <<<<< */
+/* >>>>> START OF STYLES FOR: login.html <<<<< */
 
-/* Faded seal behind the card (change opacity to make it lighter or stronger) */
+/* Large, clearer Barangay logo behind login card */
 body.gate::before {
   content: "";
   position: fixed;
   top: 50%;
   left: 50%;
-  width: min(120vmin, 100px);
-  height: min(120vmin, 100px);
+
+  width: min(85vmin, 850px);
+  height: min(85vmin, 850px);
+
   transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: url("LOGO.png") center / cover no-repeat;
-  opacity: 0.14;
+
+  background-image: url("LOGO.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  opacity: 0.38;
+  mix-blend-mode: normal;
+
   pointer-events: none;
+  z-index: 0;
 }
 
-/* White card sits above the background */
+/* White login card above background */
 body.gate main {
   position: relative;
   z-index: 1;
@@ -1189,11 +1198,28 @@ body.gate main {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
 
-.gate-logo { display: block; width: 150px; height: auto; margin: 0 auto 14px; }
+/* Small logo inside login card */
+.gate-logo {
+  display: block;
+  width: 150px;
+  height: auto;
+  margin: 0 auto 14px;
+}
 
-/* Role buttons: icon on the left, text on the right */
-.gate button.role { display: flex; align-items: center; gap: 12px; }
-.gate button.role .txt { display: block; padding: 0; border: 0; background: none; }
+/* User and Admin buttons */
+.gate button.role {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gate button.role .txt {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
 .gate button.role svg {
   flex: none;
   width: 28px;
@@ -1204,15 +1230,32 @@ body.gate main {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.gate button.role:hover svg { stroke: var(--accent); }
 
-/* Keep the green theme if user.html / admin.html also use class="gate" */
-body.gate[data-role="admin"] { --accent: green; }
-
-@media (max-width: 480px) {
-  .gate-logo { width: 120px; }
-  .gate .roles { grid-template-columns: 1fr; }
+.gate button.role:hover svg {
+  stroke: var(--accent);
 }
-/* >>>>> END OF STYLES FOR: login.html (SIGN-IN ROLE PICKER BACKGROUND) <<<<< */
+
+/* Green theme */
+body.gate[data-role="admin"] {
+  --accent: green;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .gate-logo {
+    width: 120px;
+  }
+
+  .gate .roles {
+    grid-template-columns: 1fr;
+  }
+
+  body.gate::before {
+    width: 90vmin;
+    height: 90vmin;
+  }
+}
+
+/* >>>>> END OF STYLES <<<<< */
 </style>
 /* >>>>> END OF STYLES FOR: home-admin.html (ADMIN HOME / DASHBOARD) <<<<< */
